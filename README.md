@@ -1,5 +1,8 @@
 # Cube Semantic Layer for Banking Data
 
+<img width="1308" height="668" alt="cube-pipeline" src="https://github.com/user-attachments/assets/1a7efac9-ac88-43e0-be55-48ab87dd6a85" />
+
+
 ### What is a Semantic Layer?
 
 A semantic layer is an abstraction on top of database tables that makes it easy for BI tools to query data without writing complex SQL.
