@@ -1,0 +1,46 @@
+cubes:
+  - name: dim_customers
+    sql_table: ANALYTICS.DIM_CUSTOMERS
+    
+    dimensions:
+      - name: customer_id
+        sql: CUSTOMER_ID
+        type: string
+        primary_key: true
+      
+      - name: first_name
+        sql: FIRST_NAME
+        type: string
+      
+      - name: last_name
+        sql: LAST_NAME
+        type: string
+      
+      - name: full_name
+        sql: "FIRST_NAME || ' ' || LAST_NAME"
+        type: string
+      
+      - name: email
+        sql: EMAIL
+        type: string
+      
+      - name: is_current
+        sql: IS_CURRENT
+        type: boolean
+      
+      - name: created_at
+        sql: CREATED_AT
+        type: time
+      
+      - name: effective_from
+        sql: EFFECTIVE_FROM
+        type: time
+      
+      - name: effective_to
+        sql: EFFECTIVE_TO
+        type: time
+    
+    measures:
+      - name: count
+        type: count
+        description: Total number of customers

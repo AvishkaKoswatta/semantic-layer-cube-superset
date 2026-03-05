@@ -1,0 +1,35 @@
+views:
+  - name: transactions_view
+    description: Comprehensive view of transactions with customer and account information
+    
+    cubes:
+      - join_path: fact_transactions
+        includes:
+          - transaction_id
+          - status
+          - transaction_type
+          - transaction_time
+          - count
+          - total_amount
+          - average_amount
+          - completed_count
+          - pending_count
+          - failed_count
+          - deposit_amount
+          - withdrawal_amount
+          - transfer_amount
+      
+      - join_path: fact_transactions.dim_accounts
+        prefix: true
+        includes:
+          - account_type
+          - currency
+          - total_balance
+          - average_balance
+      
+      - join_path: fact_transactions.dim_customers
+        prefix: true
+        includes:
+          - full_name
+          - email
+          - count

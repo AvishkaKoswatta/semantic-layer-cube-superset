@@ -1,0 +1,69 @@
+cubes:
+  - name: dim_accounts
+    sql_table: ANALYTICS.DIM_ACCOUNTS
+    
+    joins:
+      - name: dim_customers
+        sql: "{CUBE}.CUSTOMER_ID = {dim_customers}.CUSTOMER_ID AND {dim_customers}.IS_CURRENT = true"
+        relationship: many_to_one
+    
+    dimensions:
+      - name: account_id
+        sql: ACCOUNT_ID
+        type: string
+        primary_key: true
+      
+      - name: customer_id
+        sql: CUSTOMER_ID
+        type: string
+      
+      - name: account_type
+        sql: ACCOUNT_TYPE
+        type: string
+      
+      - name: currency
+        sql: CURRENCY
+        type: string
+      
+      - name: is_current
+        sql: IS_CURRENT
+        type: boolean
+      
+      - name: created_at
+        sql: CREATED_AT
+        type: time
+      
+      - name: effective_from
+        sql: EFFECTIVE_FROM
+        type: time
+      
+      - name: effective_to
+        sql: EFFECTIVE_TO
+        type: time
+    
+    measures:
+      - name: count
+        type: count
+        description: Total number of accounts
+      
+      - name: total_balance
+        sql: BALANCE
+        type: sum
+        description: Total balance across all accounts
+      
+      - name: average_balance
+        sql: BALANCE
+        type: avg
+        description: Average account balance
+      
+      - name: checking_accounts_count
+        type: count
+        filters:
+          - sql: "{CUBE}.ACCOUNT_TYPE = 'CHECKING'"
+        description: Number of checking accounts
+      
+      - name: savings_accounts_count
+        type: count
+        filters:
+          - sql: "{CUBE}.ACCOUNT_TYPE = 'SAVINGS'"
+        description: Number of savings accounts

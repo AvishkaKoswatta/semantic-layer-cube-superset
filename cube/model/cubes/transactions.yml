@@ -1,0 +1,96 @@
+cubes:
+  - name: fact_transactions
+    sql_table: ANALYTICS.FACT_TRANSACTIONS
+    
+    joins:
+      - name: dim_accounts
+        sql: "{CUBE}.ACCOUNT_ID = {dim_accounts}.ACCOUNT_ID AND {dim_accounts}.IS_CURRENT = true"
+        relationship: many_to_one
+      
+      - name: dim_customers
+        sql: "{CUBE}.CUSTOMER_ID = {dim_customers}.CUSTOMER_ID AND {dim_customers}.IS_CURRENT = true"
+        relationship: many_to_one
+    
+    dimensions:
+      - name: transaction_id
+        sql: TRANSACTION_ID
+        type: string
+        primary_key: true
+      
+      - name: account_id
+        sql: ACCOUNT_ID
+        type: string
+      
+      - name: customer_id
+        sql: CUSTOMER_ID
+        type: string
+      
+      - name: status
+        sql: STATUS
+        type: string
+      
+      - name: transaction_type
+        sql: TRANSACTION_TYPE
+        type: string
+      
+      - name: transaction_time
+        sql: TRANSACTION_TIME
+        type: time
+      
+      - name: load_timestamp
+        sql: LOAD_TIMESTAMP
+        type: time
+    
+    measures:
+      - name: count
+        type: count
+        description: Total number of transactions
+      
+      - name: total_amount
+        sql: AMOUNT
+        type: sum
+        description: Total transaction amount
+      
+      - name: average_amount
+        sql: AMOUNT
+        type: avg
+        description: Average transaction amount
+      
+      - name: completed_count
+        type: count
+        filters:
+          - sql: "{CUBE}.STATUS = 'COMPLETED'"
+        description: Number of completed transactions
+      
+      - name: pending_count
+        type: count
+        filters:
+          - sql: "{CUBE}.STATUS = 'PENDING'"
+        description: Number of pending transactions
+      
+      - name: failed_count
+        type: count
+        filters:
+          - sql: "{CUBE}.STATUS = 'FAILED'"
+        description: Number of failed transactions
+      
+      - name: deposit_amount
+        sql: AMOUNT
+        type: sum
+        filters:
+          - sql: "{CUBE}.TRANSACTION_TYPE = 'DEPOSIT'"
+        description: Total deposit amount
+      
+      - name: withdrawal_amount
+        sql: AMOUNT
+        type: sum
+        filters:
+          - sql: "{CUBE}.TRANSACTION_TYPE = 'WITHDRAWAL'"
+        description: Total withdrawal amount
+      
+      - name: transfer_amount
+        sql: AMOUNT
+        type: sum
+        filters:
+          - sql: "{CUBE}.TRANSACTION_TYPE = 'TRANSFER'"
+        description: Total transfer amount
